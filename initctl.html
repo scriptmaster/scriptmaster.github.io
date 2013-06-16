@@ -1,0 +1,37 @@
+<h2>Well, this gets really monotonous over the time !  Creating the same init/ scripts again and again</h2>
+
+What are these initctl scripts anyway?
+
+In short, a service script that runs at linux startup.
+
+These scripts are /etc/init/*.conf files
+
+You invoke a script with:
+
+<code>
+initctl start service1
+</code>
+
+How do you create one?  Let's say you want to run a node.js app on system startup you would do.
+<code>
+echo "exec node /home/scriptmaster/service1.js" > /etc/init/service1.conf
+</code>
+
+And to list all service scripts, simply issue the command:
+
+<code>
+initctl list
+</code>
+
+To check the status of ur service, do:
+
+<code>
+initctl status service1
+</code>
+
+to stop the service, do:
+<code>
+initctl stop service1
+</code>
+
+Services are automatically invoked at system startup !
