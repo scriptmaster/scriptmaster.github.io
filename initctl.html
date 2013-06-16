@@ -1,37 +1,37 @@
 <h2>Well, this gets really monotonous over the time !  Creating the same init/ scripts again and again</h2>
 
-What are these initctl scripts anyway?
+<h4>What are these initctl scripts anyway?</h4>
 
-In short, a service script that runs at linux startup.
+<p>In short, a service script that runs at linux startup. These scripts are /etc/init/*.conf files</p>
+<br />
+You invoke a script with:<br />
 
-These scripts are /etc/init/*.conf files
-
-You invoke a script with:
-
-<code>
+<code><pre>
 initctl start service1
-</code>
+</pre></code>
 
-How do you create one?  Let's say you want to run a node.js app on system startup you would do.
-<code>
+<h4>How do you create one?</h4>
+Let's say you want to run a node.js app on system startup you would do.
+
+<code><pre>
 echo "exec node /home/scriptmaster/service1.js" > /etc/init/service1.conf
-</code>
+</pre></code>
 
-And to list all service scripts, simply issue the command:
-
-<code>
+<p>And to list all service scripts, simply issue the command:</p>
+<br />
+<code><pre>
 initctl list
-</code>
-
-To check the status of ur service, do:
-
-<code>
+</pre></code>
+<br />
+<p>To check the status of ur service, do:
+<br />
+<code><pre>
 initctl status service1
-</code>
-
-to stop the service, do:
-<code>
+</pre></code>
+<br />
+<p>to stop the service, do:
+<code><pre>
 initctl stop service1
-</code>
-
+</pre></code>
+<br />
 Services are automatically invoked at system startup !
