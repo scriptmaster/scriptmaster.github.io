@@ -1,0 +1,18 @@
+body {
+  padding-top: 50px;
+}
+
+
+
+a.brand {
+	display: block;
+	background: #292749;
+}
+
+.nav-container {
+	padding-left: 32px;
+}
+
+button#sign-in {
+	margin-top: 20px;
+}
