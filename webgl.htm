@@ -9,7 +9,6 @@ canvas { position: absolute; width: 100%; height: 100%; }
 <script master>
 var gl;
 
-
 function init(){
   gl=document.getElementById('webgl').getContext('webgl');
   gl.clearColor(0.0,0.0,0.0,1);
@@ -17,8 +16,6 @@ function init(){
   gl.depthFunc(gl.LEQUAL);
   gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);
 }
-
-
 
 function initShaders() {
   var fragmentShader = getShader(gl, "shader-fs");
@@ -40,7 +37,6 @@ function initShaders() {
   vertexPositionAttribute = gl.getAttribLocation(shaderProgram, "aVertexPosition");
   gl.enableVertexAttribArray(vertexPositionAttribute);
 }
-
 
 function getShader(gl, id) {
   var shaderScript, theSource, currentChild, shader;
@@ -74,6 +70,22 @@ function getShader(gl, id) {
   }
 
   return shader;
+}
+
+var horizAspect = 480.0/640.0, squareVerticesBuffer;
+
+function initBuffers() {
+  squareVerticesBuffer = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, squareVerticesBuffer);
+  
+  var vertices = [
+    1.0,  1.0,  0.0,
+    -1.0, 1.0,  0.0,
+    1.0,  -1.0, 0.0,
+    -1.0, -1.0, 0.0
+  ];
+  
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
 }
 
 init();
