@@ -20,15 +20,17 @@ function init(){
 function getShader(gl, id) {
   var shaderScript, theSource, currentChild, shader;
 
-  if(!shaderScript = document.getElementById(id)) return null;
-
-  theSource = "";
-  currentChild = shaderScript.firstChild;
-
-  while(currentChild) {
-    if (currentChild.nodeType == currentChild.TEXT_NODE) theSource += currentChild.textContent;
-    currentChild = currentChild.nextSibling;
-  }
+  if(id && id.src && id.type) {
+    theSource = id.src;
+    shaderScript = id;
+  } else if(id && (shaderScript = document.getElementById(id))) {
+    theSource = "";
+    currentChild = shaderScript.firstChild;
+    while(currentChild) {
+      if (currentChild.nodeType == currentChild.TEXT_NODE) theSource += currentChild.textContent;
+      currentChild = currentChild.nextSibling;
+    }
+  } else return null;
 
   if (shaderScript.type == "x-shader/x-fragment") {
     shader = gl.createShader(gl.FRAGMENT_SHADER);
@@ -58,16 +60,6 @@ init();
   }
 </script>
 
-<script id="shader-vs" type="x-shader/x-vertex">
-  attribute vec3 aVertexPosition;
-
-  uniform mat4 uMVMatrix;
-  uniform mat4 uPMatrix;
-  
-  void main(void) {
-    gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
-  }
-</script>
 
 </body>
 </html>
