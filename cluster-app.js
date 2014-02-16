@@ -1,17 +1,15 @@
 var http	= require('http'),
 	express	= require('express'),
 	path	= require('path'),
-	swig	= require('swig'),
-	os		= require('os'),
-	fs		= require('fs'),
+	// swig	= require('swig'),
+	os	= require('os'),
+	fs	= require('fs'),
 	cluster	= require('cluster'),
-	os		= require('os'),
 	cpus	= os.cpus().length;
 
-
 if (cluster.isMaster) {
-	console.log('\nTotal number of cores: ' + numCPUs);
-	for (var i = 0; i < numCPUs; i++) {
+	console.log('\nTotal number of cores: ' + cpus);
+	for (var i = 0; i < cpus; i++) {
 		cluster.fork();
 	}
 
@@ -23,6 +21,10 @@ if (cluster.isMaster) {
 	master();
 } else {
 	worker();
+}
+
+function master() {
+	// 
 }
 
 function worker(){
@@ -43,7 +45,9 @@ function worker(){
 
 	});
 
-	http.createServer(app).listen(process.env.VMC_APP_PORT || 1337, function(){
-		console.log('Express server listening on port ' + app.get('port'));
+	var port = process.env.VMC_APP_PORT || 1337;
+
+	http.createServer(app).listen(port, function(){
+		console.log('Express server listening on port ' + port);
 	});
 }
