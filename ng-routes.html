@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.14/angular.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.16/angular-route.min.js"></script>
+  <meta charset="utf-8">
+  <title>HTML5 Mode with Pushstate</title>
+</head>
+<body>
+  <section ng-controller="PushStateController">
+    {{greetMe}}
+    <a href="/messaging/psm/list.jsp">List</a>
+    <a href="/messaging/psm/view.jsp">View</a>
+    <a href="/messaging/psm/edit/1">Edit</a>
+  </section>
+  <div ng-view></div>
+  <script type="text/javascript">
+
+// To be checked
+var mod = angular.module('sheriffApp', ['ngRoute']);
+
+mod.config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
+  $routeProvider
+        .when('/messaging/psm/list.jsp', {
+          templateUrl: '/tanozivo/1',
+          controller: 'ListController'
+        })
+        .when('/messaging/psm/view.jsp', {
+          // templateUrl: '',
+          template: 'View Mode: {{greetMe}}',
+          controller: 'PushStateController'
+        })
+        .when('/messaging/psm/edit/:id', {
+          // templateUrl: '',
+          template: 'Edit Mode: {{greetMe}}',
+          controller: 'PushStateController'
+        })
+        .when('/messaging/psm/delete/:id', {
+          // templateUrl: '',
+          template: 'Delete : {{greetMe}}',
+          controller: 'PushStateController'
+        });
+  
+    $locationProvider.html5Mode(true).hashPrefix('!');
+}]);
+
+mod.controller('PushStateController', ['$scope', function ($scope) {
+  $scope.greetMe = 'World';
+}]);
+
+mod.controller('ListController', ['$scope', function ($scope) {
+  $scope.messages = [{
+    name: 'Name 1',
+    subject: 'Subject 1',
+    date: 'Date 1'
+  },{
+    name: 'Name 2',
+    subject: 'Subject 2',
+    date: 'Date 2'
+  }];
+}]);
+
+angular.element(document).ready(function() {
+  angular.bootstrap(document, ['sheriffApp']);
+});
+
+  </script>
+</body>
+</html>
