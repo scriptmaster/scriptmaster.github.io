@@ -41,7 +41,7 @@ mod.config(['$routeProvider', '$locationProvider', function ($routeProvider, $lo
           controller: 'PushStateController'
         });
   
-    $locationProvider.html5Mode(true).hashPrefix('!');
+    $locationProvider.html5Mode(true) //.hashPrefix('!');
 }]);
 
 mod.controller('PushStateController', ['$scope', function ($scope) {
