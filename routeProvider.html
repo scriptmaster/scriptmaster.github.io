@@ -22,7 +22,7 @@ var mod = angular.module('sheriffApp', ['ngRoute']);
 mod.config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
   $routeProvider
         .when('/messaging/psm/list.jsp', {
-          templateUrl: '/tanozivo/1',
+          templateUrl: '/ng/messages.tmpl',
           controller: 'ListController'
         })
         .when('/messaging/psm/view.jsp', {
