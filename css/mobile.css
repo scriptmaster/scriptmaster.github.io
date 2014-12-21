@@ -2,12 +2,11 @@ body{font-family:sans-serif;text-align:center;margin:0;font-size:16px}.smooth{tr
 
 body {
   font: 14px/16pt Tahoma, Arial, sans-serif
+  background: #eee;
 }
 
 body > section {
   width: 480px;
-  box-shadow: 0px 10px 18px #aaa;
-  margin: 0 auto;
   text-align: center;
   min-height: 960px;
 }
@@ -20,4 +19,8 @@ header h1 {
   padding: 25px;
 }
 
-
+@media(max-width:320px) {
+  body > section {
+    width: 320px;
+  }
+}
