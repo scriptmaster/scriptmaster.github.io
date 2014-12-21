@@ -1,6 +1,18 @@
 /*******************  ***************************/
 body {
-  background-color: #eee;
+	background-color: #eee;
+  	-webkit-animation: bganim 10s linear infinite;
+  	        animation: bganim 10s linear infinite;
+}
+
+@-webkit-keyframes bganim {
+	0%, 100% { background-color: #eee; }
+	50%      { background-color: #aaa; }
+}
+
+@keyframes bganim {
+	0%, 100% { background-color: #eee; }
+	50%      { background-color: #aaa; }
 }
 
 body > section {
