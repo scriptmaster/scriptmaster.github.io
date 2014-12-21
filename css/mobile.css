@@ -15,7 +15,8 @@ body > section {
 }
 
 header {
-  background: #fff; /* random */
+  background: background-image:
+  url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNgYPhvDAACNgEzWq+7BQAAAABJRU5ErkJggg==); /* random */
 }
 
 header h1 {
