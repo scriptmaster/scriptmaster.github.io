@@ -1,9 +1,9 @@
-/******************* .ios ***************************/
-body.ios {
+/*******************  ***************************/
+body {
   background-color: #eee;
 }
 
-body.ios > section {
+body > section {
   background-color: #fff;
   box-shadow: 0px 3px 6px #aaa;
   border-radius: 4px;
