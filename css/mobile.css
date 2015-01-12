@@ -20,14 +20,45 @@ header {
 header h1 {
   margin: 0;
   padding: 25px;
+  border-bottom: 5px double #aaa
 }
 
 h1, h2, h3, h4, h5, h6 {
     font-weight: 300;
 }
 
+h2 {
+    border-bottom: 1px solid #ccc;
+    margin-top: 36px;
+    margin-bottom: 10px;
+}
+
+h2 + p::first-letter,
+p + p::first-letter,
+h3 + p::first-letter {
+    font-size: 30px;
+    padding: 0px 5px;
+    background: #ccc;
+}
+
+h3 > i {
+    float: right;
+}
+
 @media(max-width:320px) {
   body > section {
     width: 296px;
   }
+}
+
+.technologies p {
+
+}
+
+footer {
+    background: #777;
+    padding: 50px 10px;
+    margin-top: 50px;
+    text-align: center;
+    color: #fff;
 }
