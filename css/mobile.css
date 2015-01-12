@@ -23,6 +23,15 @@ header h1 {
   border-bottom: 5px double #aaa
 }
 
+a {
+    text-decoration: none;
+    color: #05a;
+}
+
+a:hover {
+    border-bottom: 1px dotted #05a;
+}
+
 h1, h2, h3, h4, h5, h6 {
     font-weight: 300;
 }
