@@ -10,7 +10,6 @@ style = function (el, s, v) { if (el) { if (!(el instanceof Array)) el = [el]; e
 
 ready(function () {
     on(first('header'), 'click', function (e) {
-        console.log(e.target.nodeName.toLowerCase());
         if (e.target.nodeName.toLowerCase() == 'header') {
             location.href = '/pro';
         }
