@@ -1,4 +1,4 @@
-font/*******************  ***************************/
+/*******************  ***************************/
 body {
 	background-color: #eee;
   	-webkit-animation: bganim 10s linear infinite;
@@ -7,12 +7,12 @@ body {
 
 @-webkit-keyframes bganim {
 	0%, 100% { background-color: #eee; }
-	50%      { background-color: #ccc; }
+	50%      { background-color: #aac; }
 }
 
 @keyframes bganim {
 	0%, 100% { background-color: #eee; }
-	50%      { background-color: #ccc; }
+	50%      { background-color: #aac; }
 }
 
 body > section {
