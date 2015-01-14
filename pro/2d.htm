@@ -16,7 +16,116 @@
         <header><h1>வணக்கம்</h1></header>
         <h1>Canvas 2D Drawings</h1>
         <h2>Linear Gradients</h2>
-        <canvas></canvas>
+        <canvas width="100" height="100"></canvas>
     </section>
+    <style>canvas{ border: 1px solid #ccc; margin-right: 10px; }</style>
+    <script master>
+
+        ready(function () {
+            var canvas = first('canvas');
+            var draw = canvas.getContext('2d');
+
+            var grad = draw.createLinearGradient(0, 0, 0, 100);
+            grad.addColorStop(0, '#32b');
+            grad.addColorStop(1, '#64b');
+
+            draw.fillStyle = grad;
+            draw.fillRect(0, 0, 100, 100);
+
+            var cp = canvas.parentNode;
+            var manycanvas = [], manydraws = [];
+            for(var i=0; i<10; i++) {
+                manycanvas[i] = create('canvas');
+                manycanvas[i].width = manycanvas[i].height = 100;
+                cp.appendChild(manycanvas[i]);
+                manydraws[i] = manycanvas[i].getContext('2d');
+            }
+
+            grad = draw.createLinearGradient(0, 0, 0, 100);
+            grad.addColorStop(0, '#38c');
+            grad.addColorStop(1, 'rgba(20,200,20,0)');
+            manydraws[0].fillStyle = grad;
+            manydraws[0].fillRect(0, 0, 100, 100);
+
+            grad = draw.createLinearGradient(0, 0, 0, 100);
+            grad.addColorStop(0, '#fff');
+            grad.addColorStop(1, '#ccc');
+            manydraws[1].fillStyle = grad;
+            manydraws[1].fillRect(0, 0, 100, 100);
+
+            grad = draw.createLinearGradient(0, 0, 0, 100);
+            grad.addColorStop(0, '#fff');
+            grad.addColorStop(1, 'rgba(100,200,100,0.5)');
+            manydraws[2].fillStyle = grad;
+            manydraws[2].fillRect(0, 0, 100, 100);
+
+            grad = draw.createLinearGradient(0, 0, 0, 100);
+            grad.addColorStop(0, '#f00');
+            grad.addColorStop(0.5, '#0f0');
+            grad.addColorStop(1, '#00f');
+            manydraws[3].fillStyle = grad;
+            manydraws[3].fillRect(0, 0, 100, 100);
+
+            grad = draw.createLinearGradient(0, 0, 0, 100);
+            grad.addColorStop(0, '#ff0');
+            grad.addColorStop(0.5, '#0ff');
+            grad.addColorStop(1, '#f0f');
+            manydraws[4].fillStyle = grad;
+            manydraws[4].fillRect(0, 0, 100, 100);
+
+            grad = draw.createLinearGradient(0, 0, 0, 100);
+            grad.addColorStop(0, '#ff0');
+            grad.addColorStop(0.5, '#0ff');
+            grad.addColorStop(0.5, '#f0f');
+            grad.addColorStop(1, '#fff');
+            manydraws[5].fillStyle = grad;
+            manydraws[5].fillRect(0, 0, 100, 100);
+
+            grad = draw.createLinearGradient(0, 0, 0, 100);
+            grad.addColorStop(0, '#0cf');
+            grad.addColorStop(0.5, '#fff');
+            grad.addColorStop(0.5, '#0f0');
+            grad.addColorStop(1, '#fff');
+            manydraws[6].fillStyle = grad;
+            manydraws[6].fillRect(0, 0, 100, 100);
+
+            grad = draw.createLinearGradient(0, 0, 0, 100);
+            grad.addColorStop(0, '#fff');
+            grad.addColorStop(0.4, '#0cf');
+            grad.addColorStop(0.5   , '#fff');
+            grad.addColorStop(0.5, '#0f0');
+            grad.addColorStop(1, '#fff');
+            manydraws[7].fillStyle = grad;
+            manydraws[7].fillRect(0, 0, 100, 100);
+
+            grad = draw.createLinearGradient(0, 0, 100, 100);
+            grad.addColorStop(0, '#ff0');
+            grad.addColorStop(0.5, '#0ff');
+            grad.addColorStop(0.5, '#3cf');
+            grad.addColorStop(1, '#fff');
+            manydraws[8].fillStyle = grad;
+            manydraws[8].fillRect(0, 0, 100, 100);
+
+            var grad2 = draw.createLinearGradient(0, 100, 100, 0);
+            grad2.addColorStop(0, 'rgba(255,255,0,0.6)');
+            grad2.addColorStop(0.5, 'rgba(0,255,255,0.6)');
+            grad2.addColorStop(0.5, 'rgba(30,100,255,0.6)');
+            grad2.addColorStop(1, 'rgba(255,255,255,0.4)');
+            manydraws[9].fillStyle = grad;
+            manydraws[9].fillRect(0, 0, 100, 100);
+            manydraws[9].fillStyle = grad2;
+            manydraws[9].fillRect(0, 0, 100, 100);
+
+            /*
+            on(first('header'), 'click', function (e) {
+                if (e.target.nodeName.toLowerCase() == 'header') {
+                    location.href = '/pro';
+                }
+            });
+            */
+        });
+
+    </script>
+    <footer>You can also view this webpage via an iPhone or Android.  Page loads times are fast and equivalent to two blinks of an eye (2x 400ms = 800ms).</footer>
 </body>
 </html>
