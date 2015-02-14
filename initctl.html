@@ -34,4 +34,5 @@ initctl status service1
 initctl stop service1
 </pre></code>
 <br />
-Services are automatically invoked at system startup !
+For automatic startup add a line at the top in the service1.conf file:<br />
+<pre><code>start on started rc RUNLEVEL=[2345]</code></pre>
