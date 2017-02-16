@@ -1,0 +1,155 @@
+<!doctype html>
+<html>
+  <head>
+    <title>D3 Geneaology by Sheriff</title>
+
+    <script master src="js/d3.js"></script>
+    <script master src="js/d3.layout.js"></script>
+    <style>
+
+	body {
+		margin: 0;
+		padding: 0;
+		font-family: Arial, serif;
+		font-size: 12px;
+	}
+
+	.node circle {
+		fill: #fff;
+		stroke: steelblue;
+		stroke-width: 1.5px;
+	}
+
+	.node { cursor: pointer;  }
+
+	path.link {
+		fill: none;
+		stroke: #ccc;
+	}
+
+    </style>
+  </head>
+  <body>
+
+  <div id="view"></div>
+
+<script master>
+
+var w = 1280,
+	h = 600;
+
+var tree = d3.layout.tree()
+			.size(w, h);
+
+var viz = d3.select('#view').append('svg:svg')
+			.attr('width', w)
+			.attr('height', h)
+			.append('svg:g')
+				.attr('transform', 'translate(20,20)')
+
+function update(root) {
+
+	var nodes = tree.nodes(root) // .reverse();
+
+	var pad = 50;
+
+	var dst = (h - (pad * 2)) / (nodes.length - 1);
+		// Exclude the first node // We will revisit this in v2 by doing some grouping of id
+
+	/*
+	var node = viz.selectAll('g.node')
+			.data(nodes, function(d, i){
+				d.x = pad + (d.depth * 380);
+				d.y = d.depth == 0? pad + ((h - pad) / 2): pad + (i * dst);
+			});
+	*/
+
+	var node = viz.selectAll('g.node')
+			.data(nodes, function(d, i){
+				d.x = 100 + (d.depth * 380);
+				d.y = d.depth == 0? (h / 2): (i * dst);
+			});
+
+
+/*
+	var start = viz.append('svg:g')
+		.attr('class', 'start')
+		.attr('transform', 'translate('+(100)+','+(h/2)+')')
+
+	start.append('svg:circle')
+		.attr('r', '4.5')
+*/
+
+
+	//=============== node ====================
+
+	var nodeEnter = node.enter().append('svg:g')
+		.attr('class', 'node')
+		//.attr('transform', 'translate(180,100)')
+		.attr('transform', function(d) {
+				return 'translate('+d.x+','+d.y+')'
+			})
+		.on('click', function(d){ showTree(d.id, d.name); })
+
+	nodeEnter.append('svg:circle')
+		.attr('r', '4.5')
+
+	nodeEnter.append('svg:text')
+		.text(function(d){ return d.name; })
+		.attr('y', '0.3em')
+		.attr('x', function(d) { return d.depth == 0 ? "-10" : "10"; })
+		.attr("text-anchor", function(d) { return d.depth == 0 ? "end" : "start"; })
+
+
+	node.exit().remove()
+
+
+	//================ path ======================
+
+
+	var link = viz.selectAll('path.link')
+				.data(tree.links(nodes), function(d){ return d.id; });
+
+	var diagonal = d3.svg.diagonal()
+		// .projection(function(d) { return [d.x, d.y]; });
+		.source(function(d) { return {"x":d.source.y, "y":d.source.x}; })            
+		.target(function(d) { return {"x":d.target.y, "y":d.target.x}; })
+		.projection(function(d) { return [d.y, d.x]; });
+
+	link.enter().insert('svg:path', 'g')
+		.attr('class', 'link')
+		.attr('d', diagonal)
+
+	link.exit().remove()
+
+
+}
+
+
+function showTree(id, name) {
+
+	d3.json('/api/v1/relations/' + id, function(data){
+		// console.log(data);
+
+		name = name || 'You';
+
+		update({id: id, name: name});
+
+		var root = {
+			id: id,
+			name: name,
+			children: data
+		};
+
+		update(root);
+
+	});
+
+}
+
+showTree(1);
+
+</script>
+
+  </body>
+</html>

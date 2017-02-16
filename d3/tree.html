@@ -2,8 +2,18 @@
 <html>
   <head>
     <title>D3 Geneaology example</title>
+
+    <script master src="https://d3js.org/d3.v4.js"></script>
   </head>
   <body>
-  
+
+<script master>
+
+	d3.json('/api/v1/people.json', function(data){
+		console.log(data);
+	});
+
+</script>
+
   </body>
 </html>
