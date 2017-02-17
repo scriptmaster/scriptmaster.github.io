@@ -1,10 +1,20 @@
-// I could have used Coffee script for genealogy though :-)
+//////////////////////////////////////////////////////////////
+// I could have used Coffee script for genealogy though :-) //
+//////////////////////////////////////////////////////////////
 var express = require('express');
 var mysql   = require('mysql');
 
 var app = express();
 
 app.use(express.static('static'));
+
+var person = express();
+
+app.get('/person', person);
+
+app.get('/', function(req, res) {
+	res.send('static/index.html')
+})
 
 var api = express();
 
@@ -41,7 +51,16 @@ api.get('/relations/:id', function (req, res) {
 			[id, id], function (error, results, fields) {
 		if (error) throw error;
 
-		res.json(results);
+		db.query('SELECT name FROM people WHERE id = ?', [id], function(e, r, f) {
+			if(e) throw e;
+
+			res.json({
+				relations: results,
+				name: r[0].name,
+				id: id,
+				names: ['Name 1', 'Name 2', 'Name 3']
+			});
+		})
 	});
 
 });
@@ -50,3 +69,4 @@ api.get('/relations/:id', function (req, res) {
 app.listen(80, function () {
 	console.log('Example app listening on port http')
 });
+

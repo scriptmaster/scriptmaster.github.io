@@ -1,155 +1,204 @@
 <!doctype html>
 <html>
-  <head>
-    <title>D3 Geneaology by Sheriff</title>
+	<head>
+	<title>D3 Genealogy by Sheriff</title>
 
-    <script master src="js/d3.js"></script>
-    <script master src="js/d3.layout.js"></script>
-    <style>
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+	<style type="text/css">
+		.navbar { border-radius:0; }
 
-	body {
-		margin: 0;
-		padding: 0;
-		font-family: Arial, serif;
-		font-size: 12px;
-	}
+		body {
+			margin: 0;
+			padding: 0;
+			font-family: Arial, serif;
+			font-size: 12px;
+		}
 
-	.node circle {
-		fill: #fff;
-		stroke: steelblue;
-		stroke-width: 1.5px;
-	}
+		.node circle {
+			fill: #fff;
+			stroke: steelblue;
+			stroke-width: 1.5px;
+		}
 
-	.node { cursor: pointer;  }
+		.node { cursor: pointer;  }
 
-	path.link {
-		fill: none;
-		stroke: #ccc;
-	}
+		path.link {
+			fill: none;
+			stroke: #ccc;
+		}
 
-    </style>
-  </head>
-  <body>
+	</style>
 
-  <div id="view"></div>
+	<script master src="js/d3.js"></script>
+	<script master src="js/d3.layout.js"></script>
+	<script master src="//code.angularjs.org/1.2.13/angular.js"></script>
+	<script master src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.8/angular-ui-router.min.js"></script>
+
+	</head>
+
+	<body ng-app="d3" ng-controller="PeopleController">
+
+	<div ui-view></div>
 
 <script master>
 
-var w = 1280,
-	h = 600;
+var app = angular.module('d3', ['ui.router']);
 
-var tree = d3.layout.tree()
-			.size(w, h);
+app.config(function($stateProvider, $urlRouterProvider) {
 
-var viz = d3.select('#view').append('svg:svg')
-			.attr('width', w)
-			.attr('height', h)
-			.append('svg:g')
-				.attr('transform', 'translate(20,20)')
+	// // //
+	$urlRouterProvider.otherwise('/person/1')
+	// $urlRouterProvider.otherwise('/person/' + (localStorage.userId || 1))
+	// // //
 
-function update(root) {
+	$stateProvider
+	.state('person', {
 
-	var nodes = tree.nodes(root) // .reverse();
+		url: '/person/:ids',
 
-	var pad = 50;
+		templateUrl: 'partials-chart.html',
 
-	var dst = (h - (pad * 2)) / (nodes.length - 1);
-		// Exclude the first node // We will revisit this in v2 by doing some grouping of id
+		controller: function($scope, $stateParams) {
 
-	/*
-	var node = viz.selectAll('g.node')
-			.data(nodes, function(d, i){
-				d.x = pad + (d.depth * 380);
-				d.y = d.depth == 0? pad + ((h - pad) / 2): pad + (i * dst);
+			var ids = $stateParams.ids.split(',');
+			var userId = ids[ids.length - 1];
+
+			$scope.pathIndices = [];
+			$scope.path = [];
+
+			var w = 1280,
+				h = 600;
+
+			var tree = d3.layout.tree()
+						.size(w, h);
+
+			var viz = d3.select('#chart').append('svg:svg')
+						.attr('width', w)
+						.attr('height', h)
+						.append('svg:g')
+						.attr('transform', 'translate(20,20)')
+
+			d3.json('/api/v1/relations/' + userId + '?ids=' + ids, function(data) {
+				// var name = data.name || 'You';
+
+				var root = {
+					ids: ids,
+					id: userId,
+					name: data.name || 'You',
+					children: data.relations
+				};
+
+				$scope.path = data.names || ids || [''];
+
+				renderChart(root);
+
+				$scope.$digest();
+
 			});
-	*/
-
-	var node = viz.selectAll('g.node')
-			.data(nodes, function(d, i){
-				d.x = 100 + (d.depth * 380);
-				d.y = d.depth == 0? (h / 2): (i * dst);
-			});
 
 
-/*
-	var start = viz.append('svg:g')
-		.attr('class', 'start')
-		.attr('transform', 'translate('+(100)+','+(h/2)+')')
+			function renderChart(root) {
 
-	start.append('svg:circle')
-		.attr('r', '4.5')
-*/
+				var nodes = tree.nodes(root) // .reverse();
+				var pad = 50;
+				var dst = (h - (pad * 2)) / (nodes.length - 1);
 
+				viz.selectAll('g.node').remove();
 
-	//=============== node ====================
+				var node = viz.selectAll('g.node')
+						.data(nodes, function(d, i){
+							d.x = 100 + (d.depth * 380);
+							d.y = d.depth == 0? (h / 2): (i * dst);
+						});
 
-	var nodeEnter = node.enter().append('svg:g')
-		.attr('class', 'node')
-		//.attr('transform', 'translate(180,100)')
-		.attr('transform', function(d) {
-				return 'translate('+d.x+','+d.y+')'
-			})
-		.on('click', function(d){ showTree(d.id, d.name); })
+				var duration = 60;
+				//=============== node ====================
+				var nodeEnter = node.enter().append('svg:g')
+					.attr('class', 'node')
+					//.attr('transform', 'translate(180,100)')
+					.attr('transform', function(d) {
+							return 'translate('+d.x+','+d.y+')'
+						})
+					.on('click', function(d) {
 
-	nodeEnter.append('svg:circle')
-		.attr('r', '4.5')
+						var index = root.ids.indexOf('' + d.id);
 
-	nodeEnter.append('svg:text')
-		.text(function(d){ return d.name; })
-		.attr('y', '0.3em')
-		.attr('x', function(d) { return d.depth == 0 ? "-10" : "10"; })
-		.attr("text-anchor", function(d) { return d.depth == 0 ? "end" : "start"; })
+						if (index > -1) {
+							root.ids.splice(index + 1);
+							// root.names.splice(index + 1);
+						} else {
+							root.ids.push(d.id);
+							// root.names.push(d.name);
+						}
 
+						location.href = '#' + '/person/' + root.ids; //  + ',' + d.id;
+					})
 
-	node.exit().remove()
+				nodeEnter.append('svg:circle')
+					.attr('r', '4.5')
 
+				nodeEnter.append('svg:text')
+					.text(function(d){ return d.name; })
+					.attr('y', '0.3em')
+					.attr('x', function(d) { return d.depth == 0 ? "-10" : "10"; })
+					.attr("text-anchor", function(d) { return d.depth == 0 ? "end" : "start"; })
 
-	//================ path ======================
-
-
-	var link = viz.selectAll('path.link')
-				.data(tree.links(nodes), function(d){ return d.id; });
-
-	var diagonal = d3.svg.diagonal()
-		// .projection(function(d) { return [d.x, d.y]; });
-		.source(function(d) { return {"x":d.source.y, "y":d.source.x}; })            
-		.target(function(d) { return {"x":d.target.y, "y":d.target.x}; })
-		.projection(function(d) { return [d.y, d.x]; });
-
-	link.enter().insert('svg:path', 'g')
-		.attr('class', 'link')
-		.attr('d', diagonal)
-
-	link.exit().remove()
+				node.exit().remove();
 
 
-}
+				//================ path ======================
+				viz.selectAll('path.link').remove()
+
+				var link = viz.selectAll('path.link')
+							.data(tree.links(nodes), function(d){ return d.id; });
+
+				var diagonal = d3.svg.diagonal()
+					// .projection(function(d) { return [d.x, d.y]; });
+					.source(function(d) { return {"x":d.source.y, "y":d.source.x}; })            
+					.target(function(d) { return {"x":d.target.y, "y":d.target.x}; })
+					.projection(function(d) { return [d.y, d.x]; });
+
+				link.enter().insert('svg:path', 'g')
+					.attr('class', 'link')
+					.attr('d', diagonal)
+
+				link.exit()
+					//.transition()
+					//.duration(duration)
+					.remove();
+
+				// // // // //
+				/*
+				var index = $scope.pathIndices.indexOf(root.id);
+
+				if (index > -1) {
+					$scope.pathIndices.splice(index + 1);
+					// $scope.pathIndices = [root.id];
+					$scope.path.splice(index + 1);
+					// $scope.path = [root.name];
+					$scope.$digest();
+				} else {
+					$scope.pathIndices.push(root.id);
+					$scope.path.push(root.name);
+					$scope.$digest();
+				}
+				*/
+
+			}
+
+		}
+	})
+	// // //
+})
 
 
-function showTree(id, name) {
+app.controller('PeopleController', ['$scope', function($scope) {
 
-	d3.json('/api/v1/relations/' + id, function(data){
-		// console.log(data);
+	// showTree(1);
 
-		name = name || 'You';
-
-		update({id: id, name: name});
-
-		var root = {
-			id: id,
-			name: name,
-			children: data
-		};
-
-		update(root);
-
-	});
-
-}
-
-showTree(1);
+}])
 
 </script>
 
-  </body>
+	</body>
 </html>
