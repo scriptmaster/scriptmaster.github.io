@@ -10,6 +10,7 @@ w.style = function (el, s, v) { if (el) { if (!(el instanceof Array)) el = [el];
 w.create = function(e){return document.createElement(e)}
 })()
 //class{constructor(){}}
+// I like angular.js (1.x) not 2, ionic, react, preact, markojs and hyperapp, so chill. be fun.
 
 ready(function () {
     on(first('header'), 'click', function (e) {
