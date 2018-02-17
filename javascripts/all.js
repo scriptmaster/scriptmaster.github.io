@@ -1,7 +1,7 @@
 /* Sheriff's 1KB JS framework */
 (function(doc,w){
 var d = { id: 'getElementById', q: 'querySelector',qa:'querySelectorAll', aEL:'addEventListener',rEL:'removeEventListener' };
-w.on = function (el, ev, ef) { if(!el) return; if(!(el instanceof Array)) el = [el]; el.forEach(function(e){ e[d.aEL](ev, ef) }) }
+w.on = function (el, ev, ef) { if(!el) return; if(typeof el=='string')el=all(el); if(!(el instanceof Array)) el = [el]; el.forEach(function(e){ e[d.aEL](ev, ef) }) }
 w.once = function(el,ev,ef){var c=function(p){el[d.rEL](ev,c);ef(p)};on(el,ev,c)}
 var readies = [];
 w.ready = function (f) { if (readies) readies.push(f); else f() };
