@@ -1,8 +1,12 @@
 /* Sheriff's 1KB JS framework */
 (function(){
-var doc = document, d = { id: 'getElementById', q: 'querySelector', qa: 'querySelectorAll' }, w = window;
-w.on = function (el, ev, ef, c) { if (!el) return; ev = 'on' + ev; if (!(el instanceof Array)) el = [el]; el.forEach(function (e) { if (e[ev]) c = e[ev]; else c = function(){ }; e[ev] = function(e) { c.call(this,e); ef.call(this,e); } }) } // no attachEvent addEventHandler
-w.ready = function (f) { if (readies) readies.push(f); else f() }; readies = []; document.onreadystatechange = function (ev) { document.onreadystatechange = null; body = document.body; readies.forEach(function(f){f()}); readies = null };
+var doc = document, d = { id: 'getElementById', q: 'querySelector',qa:'querySelectorAll', aEL:'addEventListener',rEL:'removeEventListener' };
+var w = window;
+w.on = function (el, ev, ef) { if(!el) return; if(!(el instanceof Array)) el = [el]; el.forEach(function(e){ e[d.aEL](ev, ef) }) }
+w.once = function(el,ev,ef){var c=function(p){el[d.rEL](ev,c);ef(p)};on(el,ev,c)}
+var readies = [];
+w.ready = function (f) { if (readies) readies.push(f); else f() };
+once(doc, 'readystatechange', function(){readies && readies.forEach(function(f){f()})})
 w.id = function (e) { return doc[d.id](e) };
 w.first = function (e) { return doc[d.q](e) };
 w.all = function (e) { return doc[d.qa](e) };
