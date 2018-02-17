@@ -11,17 +11,18 @@ w.first = function (e) { return doc[d.q](e) };
 w.all = function (e) { return doc[d.qa](e) };
 w.style = function (el, s, v) { if (el) { if (!el.forEach) el = [el]; el.forEach(function (e) { e.style[s] = v; }) } }
 w.create = function(e){return document.createElement(e)}
-Node.prototype.extends = function(Cls) {if(!Cls) throw new Error('Required Parameter "Class" missing.'); Object.assign(this, Cls.prototype); Cls.prototype.constructor.apply(this) }
+Node.prototype.extends = function(Cls) {if(!Cls) throw new Error('Required Parameter "Class" missing.'); Object.assign(this, new Cls(Array.prototype.slice.call(arguments,1))); }
 NodeList.prototype.extends = function(Cls) {this.forEach(function(n){n.extends(Cls);}) }
-ready(function(){
+ready(function(){setTimeout(extendReady,30)})
+function extendReady(){
   all('.extends').forEach(function(el){
-    this.classList.forEach(function(c){
-      c.substr(0,5)=='class' && typeof window[c.substr(5)] == 'function' && el.extends([c.substr(5)])
+    el.classList.forEach(function(c){
+      c.substr(0,5)=='class' && typeof eval(c.substr(5)) == 'function' && el.extends(eval(c.substr(5)))
     })
   })
-})
+}
 })(document,this)
-//class{constructor(){}}
+//class Slider{constructor(){}} //HTML: <ul class="extends classSlider">...</ul>
 // I like angular.js (1.x) not 2, ionic, react, preact, markojs and hyperapp, so chill. be fun.
 
 ready(function () {
