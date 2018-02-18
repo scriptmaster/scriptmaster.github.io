@@ -11,19 +11,20 @@ w.first = function (e) { return doc[d.q](e) };
 w.all = function (e) { return doc[d.qa](e) };
 w.style = function (el, s, v) { if (el) { if (!el.forEach) el = [el]; el.forEach(function (e) { e.style[s] = v; }) } }
 w.create = function(e){return document.createElement(e)}
-var extensions = {
-  $$: function(s){ return this.querySelectorAll(s) }
-};
+
 Node.prototype.extends = function(Cls) {
   if(!Cls) throw new Error('Required Parameter "Class" missing.');
-  var o = new Cls(Array.prototype.slice.call(arguments,1));
-  var r = Object.assign(this, extensions, o);
+  const extensions = { $$: (function(s){ return this.querySelectorAll(s) }).bind(this) };
+  const NewCls = Object.assign(Cls)
+  Object.assign(NewCls.prototype, extensions);
+  const o = new NewCls(Array.prototype.slice.call(arguments,1));
+  const r = Object.assign(this, o, extensions);
   Object.getOwnPropertyNames(Cls.prototype).forEach(function(k){
     if(k.length > 2 && k.substr(0,2)=='on') on(r, k.substr(2), o[k].bind(r))
   })
 }
 NodeList.prototype.extends = function(Cls) {this.forEach(function(n){n.extends(Cls);}) }
-ready(function(){setTimeout(extendReady,30)})
+ready(function(){setTimeout(extendReady,10)})
 function extendReady(){
   all('.extends').forEach(function(el){
     el.classList.forEach(function(c){
@@ -32,6 +33,7 @@ function extendReady(){
   })
 }
 })(document,this)
+/* Sheriff's 2KB JS framework */
 //class Slider{constructor(){}} //HTML: <ul class="extends classSlider">...</ul>
 // I like angular.js (1.x) not 2, ionic, react, preact, markojs and hyperapp, so chill. be fun. be simple.
 
