@@ -34,8 +34,8 @@ function extendReady(){
 }
 })(document,this)
 /* Sheriff's 2KB JS framework */
-//class Slider{constructor(){}} //HTML: <ul class="extends classSlider">...</ul>
-// I like angular.js (1.x) not 2, ionic, react, preact, markojs and hyperapp, so chill. be fun. be simple.
+// class Slider{constructor(){}} //HTML: <ul class="extends classSlider">...</ul>
+// be friendly, and talk directly, by greeting with a hi first. :)
 
 ready(function () {
     on(first('header'), 'click', function (e) {
