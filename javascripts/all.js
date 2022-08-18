@@ -3,9 +3,11 @@
 var d = { id: 'getElementById', q: 'querySelector',qa:'querySelectorAll', aEL:'addEventListener',rEL:'removeEventListener' };
 w.on = function (el, ev, ef) { if(!el) return; if(typeof el=='string')el=all(el); if(!el.forEach)el=[el]; el.forEach(function(e){ e[d.aEL](ev, ef) }) }
 w.once = function(el,ev,ef){var c=function(p){el[d.rEL](ev,c);ef(p)};on(el,ev,c)}
-var readies = [];
-w.ready = function (f) { if (readies) readies.push(f); else f() };
-once(doc, 'readystatechange', function(){readies && readies.forEach(function(f){f()})})
+
+var starters = [];
+w.ready = function (f) { if (starters) starters.push(f); else f() };
+once(doc, 'DOMContentLoaded', function(){starters.forEach(function(f){f()});starters=null;})
+
 w.id = function (e) { return doc[d.id](e) };
 w.first = function (e) { return doc[d.q](e) };
 w.all = function (e) { return doc[d.qa](e) };
