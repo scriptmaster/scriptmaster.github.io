@@ -28,14 +28,20 @@ NodeList.prototype.extends = function(Cls) {this.forEach(function(n){n.extends(C
 
 ready(function(){setTimeout(extendReady,10)})
 
-function extendReady(){
-  all('.extends').forEach(function(el){
+
+function extendReady() {
+  all('.extends').forEach(function(el) {
     el.classList.forEach(function(c){
-      c.substring(0,5)=='class' && typeof window[c.substring(5)] == 'function' && el.extends(window[c.substring(5)])
+      c.substring(0,5)=='class' && typeof w[c.substring(5)] == 'function' && el.extends(w[c.substring(5)])
     })
-  })
+  });
+  all('[data-bind]').forEach(function(el) {
+    const dbv = el.attributes['data-bind'].value;
+    if(dbv && typeof w[dbv] == 'function') el.extends(w[dbv]);
+  });
 }
+
 })(document,this)
 
-//class MyComponent{constructor(){}}; window['MyComponent']=MyComponent;
+//class MyComponent{constructor(){}}; window['MyComponent']=MyComponent; MyOtherComp = class { onclick() { /*-*/ } }
 //HTML: <ul class="extends classMyComponent">...</ul>
