@@ -20,7 +20,7 @@ Node.prototype.extends = function(Cls) {
   const o = new NewCls(Array.prototype.slice.call(arguments,1));
   const r = Object.assign(this, o, extensions);
   Object.getOwnPropertyNames(Cls.prototype).forEach(function(k){
-    if(k.length > 2 && k.substr(0,2)=='on') on(r, k.substr(2), o[k].bind(r))
+    if(k.length > 2 && k.substring(0,2)=='on') on(r, k.substring(2), o[k].bind(r));
   })
 }
 NodeList.prototype.extends = function(Cls) {this.forEach(function(n){n.extends(Cls);}) }
