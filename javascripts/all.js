@@ -30,7 +30,7 @@ ready(function(){setTimeout(extendReady,10)})
 function extendReady(){
   all('.extends').forEach(function(el){
     el.classList.forEach(function(c){
-      c.substring(0,5)=='class' && typeof window[c.substr(5)] == 'function' && el.extends(window[c.substring(5)])
+      c.substring(0,5)=='class' && typeof w[c.substr(5)] == 'function' && el.extends(w[c.substring(5)])
     })
   })
 }
