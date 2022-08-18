@@ -36,7 +36,7 @@ function extendReady(){
 }
 })(document,this)
 /* Sheriff's 2KB JS framework */
-// class Slider{constructor(){}} //HTML: <ul class="extends classSlider">...</ul>
+// class ListItem{constructor(){}}; window['ListItem']=ListItem; // <ul class="extends classListItem">...</ul>
 // be friendly, and talk directly, by greeting with a hi first. :)
 
 ready(function () {
