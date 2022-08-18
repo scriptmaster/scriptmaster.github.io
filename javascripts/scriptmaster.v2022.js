@@ -37,5 +37,5 @@ function extendReady(){
 }
 })(document,this)
 
-//class MyComponent{constructor(){}}
+//class MyComponent{constructor(){}}; window['MyComponent']=MyComponent;
 //HTML: <ul class="extends classMyComponent">...</ul>
