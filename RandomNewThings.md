@@ -1,4 +1,4 @@
-# Learning Session
+# Session (for you to learn)
 
 ## State Provider vs. Route Provider
 
