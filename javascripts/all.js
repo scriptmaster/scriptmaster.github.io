@@ -13,7 +13,7 @@ w.style = function (el, s, v) { if (el) { if (!el.forEach) el = [el]; el.forEach
 w.create = function(e){return document.createElement(e)}
 
 Node.prototype.extends = function(Cls) {
-  if(!Cls) throw new Error('Required Parameter "Class" missing.');
+  if(!Cls) throw new Error('Required Parameter "Cls" missing.');
   const extensions = { $$: (function(s){ return this.querySelectorAll(s) }).bind(this) };
   const NewCls = Object.assign(Cls)
   Object.assign(NewCls.prototype, extensions);
@@ -28,7 +28,7 @@ ready(function(){setTimeout(extendReady,10)})
 function extendReady(){
   all('.extends').forEach(function(el){
     el.classList.forEach(function(c){
-      c.substr(0,5)=='class' && typeof eval(c.substr(5)) == 'function' && el.extends(eval(c.substr(5)))
+      c.substr(0,5)=='class' && typeof window[c.substr(5)] == 'function' && el.extends(window[c.substr(5)])
     })
   })
 }
