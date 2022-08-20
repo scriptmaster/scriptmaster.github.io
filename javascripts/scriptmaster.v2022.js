@@ -21,8 +21,8 @@ Node.prototype.extends = function(Cls) {
     $: this.querySelector.bind(this),
     on: function(ev, ef){on(this,ev,ef.bind(this))}.bind(this),
     request: request,
-    fetch: (u,o) => { return request(u, { headers: { 'X-Requested-With': 'fetch' } }) },
-    xhr:   (u,o) => { return request(u, { headers: { 'X-Requested-With': 'XMLHttpRequest' } }) },
+    fetch: bring, xhr: xhr,
+    json: (r, data) => { return bring(r, { 'Accept': 'application/json', ...(data?{'Content-Type': 'application/json'}: null) }, data? { method: 'POST', body: JSON.stringify(data) }: null); }
   };
   const NewCls = Object.assign(Cls)
   Object.assign(NewCls.prototype, extensions);
@@ -39,7 +39,9 @@ Node.prototype.extends = function(Cls) {
       if(k[_slctr.length] == '_') return binder(k.substring(_slctr.length+1), o, Object.assign(el, o, extensions), o[k]);
     }));
   });
-  function request(url, opts, fn) { return (fn||fetch)(url, { credentials: 'same-origin', headers: {'X-Requested-With': 'XMLHttpRequest'}, ...opts }); }
+  function bring(r,h,o) { return request(r, { headers: { 'X-Requested-With': 'fetch', ...h }, ...o }) }
+  function xhr(r,h,o) { return request(r, { headers: { 'X-Requested-With': 'XMLHttpRequest', ...h }, ...o }) } /*@*/
+  function request(req, opts, fn) { console.log('request',req,opts); return (fn||fetch)(req, { credentials: 'same-origin', ...opts }); }
 }
 
 NodeList.prototype.extends = function(Cls) {this.forEach(function(n){n.extends(Cls);}) }
@@ -53,11 +55,11 @@ function extendReady() {
     })
   });
   all('[data-bind]').forEach(function(el) {
-    const dbv = el.attributes['data-bind'].value;
-    if(dbv && typeof w[dbv] == 'function') el.extends(w[dbv]);
+    const dbv = el.attributes['data-bind'].value || function(){};
+    el.extends(w[dbv]);
   });
 }
 })(document,this)
 
 //class MyComponent{constructor(){} members = ['.btn']; _btn_onclick(){ } }
-//HTML: <ul class="extends classMyComponent"><li data-bind="li"></li></ul>
+//HTML: <ul class="extends classMyComponent"><li data-bind="Component2"></li></ul>
